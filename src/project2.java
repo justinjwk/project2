@@ -5,44 +5,48 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class project2
 {
-	private final static boolean DEBUG = false;
-	private final static String STUDENT_FILE = "usernames1.txt";
-	private final static String STAFF_FILE = "staff1.txt";
-	
-	// create a student list and staff list
-	private static ArrayList<Student> allStudentList = new ArrayList<Student>();
-	private static ArrayList<Staff> staffList = new ArrayList<Staff>();
-	
 	// create a Scanner for user input
 	public static Scanner sc = new Scanner(System.in);
 
-	public static void main(String[] args) {
+	private final static boolean DEBUG = true;
+	private final static String STUDENT_FILE = "usernames1.txt";
+	private final static String STAFF_FILE = "staff1.txt";
+	private final static int MAX_STUDENTS_FOR_TA = 25;
 
-		int numStudents, numStaffs, numTA, numGrader;
+	// create a student list and staff list
+	private static ArrayList<Student> allStudentList = new ArrayList<Student>();
+	private static ArrayList<Staff> staffList = new ArrayList<Staff>();
+
+	private static int numStudents, numStaffs, numTA, numGrader;
+
+	public static void main(String[] args) {
 
 		allStudentList = generateStudentList(STUDENT_FILE);
 		staffList = generateStaffList(STAFF_FILE);
-		
+
 		numStudents = getNumOfStudents(allStudentList);
 		numStaffs = getNumOfStaffs(staffList);
-		
-		
+		numTA = countTA(staffList);
+		numGrader = countGrader(staffList);
 
 		// this userInput for containing user's input
 		char userInput;
 
 		greeting();
 
+		assignStudents(allStudentList, staffList);
+
 		do
 		{
 			// call displayMenu() method and display menu for a user
 			displayMenu();
-			
+
 			// call askUserInput() method and assign it to userInput value
 			userInput = askUserInput();
 
@@ -55,7 +59,7 @@ public class project2
 			{
 				System.out.println(staffList);
 			}
-			
+
 
 		} while(userInput != 'Q'); // this loop will be stopped when user inputs 'x' character or counter is 75 
 
@@ -63,7 +67,87 @@ public class project2
 		finished();
 
 	}
-	
+
+	private static void assignStudents(ArrayList<Student> allStudentList, ArrayList<Staff> staffList)
+	{
+
+		int totalStudentsForTAs = numTA * MAX_STUDENTS_FOR_TA;
+		int totalStudentsForGraders = numStudents - totalStudentsForTAs;
+		int studentsForEachGrader = totalStudentsForGraders / numGrader;
+		int remainStudentsForGrader = totalStudentsForGraders % numGrader; 
+
+		int[] numStudentsForGraders = new int[numGrader];
+		for(int i = 0; i < numGrader; i++)
+		{
+			numStudentsForGraders[i] = studentsForEachGrader;
+		}
+		for(int i = 0; i < remainStudentsForGrader; i++)
+		{
+			numStudentsForGraders[i] += 1;
+		}
+
+		if(DEBUG)
+		{
+			System.out.println("Students for TAs = " + totalStudentsForTAs);
+			System.out.println("Students for Graders = " + totalStudentsForGraders);
+			System.out.println("Students for Each Grader = " + studentsForEachGrader);
+			System.out.println("Remain students for Graders = " + remainStudentsForGrader);
+			for(int i = 0; i < numStudentsForGraders.length; i++)
+			{
+				System.out.println("Number of student for Grader " + (i + 1) + " = " + numStudentsForGraders[i]);
+			}
+		}
+
+
+
+		Iterator<Student> iStudent = allStudentList.iterator();
+		Iterator<Staff> iStaff = staffList.iterator();
+
+		int counterForTA = 0;
+
+		while(iStudent.hasNext())
+		{
+
+		}
+
+	}
+
+	private static int countTA(ArrayList<Staff> staffList)
+	{
+		int count = 0;
+		Iterator<Staff> i = staffList.iterator();
+		while(i.hasNext())
+		{
+			Staff s = i.next();
+			if(s.getRole().equals("TA")) { count++; }
+		}
+
+		if(DEBUG)
+		{
+			System.out.println("Num of TAs = " + count);
+		}
+
+		return count;
+	}
+
+	private static int countGrader(ArrayList<Staff> staffList)
+	{
+		int count = 0;
+		Iterator<Staff> i = staffList.iterator();
+		while(i.hasNext())
+		{
+			Staff s = i.next();
+			if(s.getRole().equals("Grader")) { count++; }
+		}
+
+		if(DEBUG)
+		{
+			System.out.println("Num of Graders = " + count);
+		}
+
+		return count;
+	}
+
 	private static ArrayList<Student> generateStudentList(String filePath)
 	{
 		// read a username files and assign it to studentlist
@@ -78,10 +162,10 @@ public class project2
 			System.out.println("---- All students list ----");
 			System.out.println(allStudentList);
 		}
-		
+
 		return allStudentList;
 	}
-	
+
 	private static int getNumOfStudents(ArrayList<Student> allStudentList)
 	{
 		if(DEBUG)
@@ -91,11 +175,11 @@ public class project2
 		}
 		return allStudentList.size();
 	}
-	
+
 	private static ArrayList<Staff> generateStaffList(String filePath)
 	{
 		staffList = readSaffData(filePath);
-		
+
 		Collections.sort(staffList);
 
 		if(DEBUG) 
@@ -103,10 +187,10 @@ public class project2
 			System.out.println("---- All staffs list ----");
 			System.out.println(staffList);
 		}
-		
+
 		return staffList;
 	}
-	
+
 	private static int getNumOfStaffs(ArrayList<Staff> staffList)
 	{
 		if(DEBUG)
@@ -114,7 +198,7 @@ public class project2
 			System.out.println("---- Num of staffs ----");
 			System.out.println(staffList.size());
 		}
-		
+
 		return staffList.size();
 	}
 
@@ -168,17 +252,9 @@ public class project2
 				String fName = tokenizer.nextToken();
 				String lName = tokenizer.nextToken();
 				String role = tokenizer.nextToken();
-				// if staff's role is a TA, then create a TA object and add to staffslist
-				if (role.equals("TA"))
-				{
-					TA ta = new TA(fName, lName);
-					staffsList.add(ta);
-				}
-				else
-				{
-					Grader grader = new Grader(fName, lName);
-					staffsList.add(grader);
-				}
+
+				Staff staff = new Staff(fName, lName, role);
+				staffsList.add(staff);
 			}
 		}
 		return staffsList;
