@@ -54,7 +54,7 @@ public class Staff implements Comparable<Object>
 
 	@Override
 	public String toString() {
-		return "Staff [fName=" + fName + ", lName=" + lName + ", studentsList=" + studentsList + "]";
+		return "Staff [Name= " + fName + " " + lName + ", studentsList=" + studentsList + "]";
 	}
 
 	@Override

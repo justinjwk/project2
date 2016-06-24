@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 public class project2
 {
-	private final static boolean DEBUG = true;
+	private final static boolean DEBUG = false;
 	private final static String STUDENT_FILE = "usernames1.txt";
 	private final static String STAFF_FILE = "staff1.txt";
 	
@@ -23,9 +23,15 @@ public class project2
 
 	public static void main(String[] args) {
 
-		int numStudents, numStaff, numTA, numGrader;
+		int numStudents, numStaffs, numTA, numGrader;
 
 		allStudentList = generateStudentList(STUDENT_FILE);
+		staffList = generateStaffList(STAFF_FILE);
+		
+		numStudents = getNumOfStudents(allStudentList);
+		numStaffs = getNumOfStaffs(staffList);
+		
+		
 
 		// this userInput for containing user's input
 		char userInput;
@@ -34,14 +40,22 @@ public class project2
 
 		do
 		{
+			// call displayMenu() method and display menu for a user
+			displayMenu();
+			
 			// call askUserInput() method and assign it to userInput value
 			userInput = askUserInput();
 
-			// if user inputs 'n' then restart the game
+			// if user inputs 'c' or 'C' then display the number of students
 			if(userInput == 'C')
 			{
-
+				System.out.println("The number of all students = " + numStudents);
 			}
+			if(userInput == 'S')
+			{
+				System.out.println(staffList);
+			}
+			
 
 		} while(userInput != 'Q'); // this loop will be stopped when user inputs 'x' character or counter is 75 
 
@@ -55,35 +69,53 @@ public class project2
 		// read a username files and assign it to studentlist
 		allStudentList = readStudentData(filePath);
 
-		//numStudents = allStudentList.size();
-		//System.out.println("Student number : " + numStudents);
 		// sort student list
 		Collections.sort(allStudentList);
-		
-		
+
+		// Debug statments
 		if(DEBUG) 
 		{
 			System.out.println("---- All students list ----");
 			System.out.println(allStudentList);
-
 		}
 		
 		return allStudentList;
 	}
 	
-	private static void generateStaffList()
+	private static int getNumOfStudents(ArrayList<Student> allStudentList)
 	{
-		staffList = readSaffData("staff1.txt");
-		//numStaff = staffList.size();
-		//System.out.println("Staff number : " + numStaff);
+		if(DEBUG)
+		{
+			System.out.println("---- Num of all students ----");
+			System.out.println(allStudentList.size());
+		}
+		return allStudentList.size();
+	}
+	
+	private static ArrayList<Staff> generateStaffList(String filePath)
+	{
+		staffList = readSaffData(filePath);
+		
 		Collections.sort(staffList);
 
 		if(DEBUG) 
 		{
 			System.out.println("---- All staffs list ----");
 			System.out.println(staffList);
-
 		}
+		
+		return staffList;
+	}
+	
+	private static int getNumOfStaffs(ArrayList<Staff> staffList)
+	{
+		if(DEBUG)
+		{
+			System.out.println("---- Num of staffs ----");
+			System.out.println(staffList.size());
+		}
+		
+		return staffList.size();
 	}
 
 	public static ArrayList<Student>readStudentData(String filePath)
@@ -167,13 +199,12 @@ public class project2
 	private static void displayMenu()
 	{
 		System.out.println("***************************************************************");
-		System.out.println("*                      == User Menu ==                    s   *");
+		System.out.println("*                      == User Menu ==                        *");
 		System.out.println("*   D - Display single Staff member and students assigned     *");
 		System.out.println("*   C - Display the number of students                        *");
 		System.out.println("*   S - Display all staff members                             *");
 		System.out.println("*   Q - Quite the program                                     *");
 		System.out.println("***************************************************************");
-		System.out.println();
 	}
 
 	/*
@@ -182,7 +213,7 @@ public class project2
 	private static char askUserInput() 
 	{
 		// Display a message to user to input his/her choice 
-		System.out.print("User Input: ");
+		System.out.print("Enter Your Choice: ");
 		// return with first letter of user's input as a upper case letter
 		return sc.next().toUpperCase().charAt(0);
 	}
