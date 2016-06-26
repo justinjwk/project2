@@ -10,7 +10,7 @@ public class Staff implements Comparable<Object>
 		this.fName = "";
 		this.lName = "";
 		this.role = "";
-		this.studentsList = null;
+		this.studentsList = new ArrayList<Student>();
 	}
 	
 	public Staff(String fName, String lName, String role) 
@@ -18,7 +18,7 @@ public class Staff implements Comparable<Object>
 		this.fName = fName;
 		this.lName = lName;
 		this.role = role;
-		this.studentsList = null;
+		this.studentsList = new ArrayList<Student>();
 	}
 	
 	public Staff(String fName, String lName, String role, ArrayList<Student> studentsList) 
@@ -27,6 +27,11 @@ public class Staff implements Comparable<Object>
 		this.lName = lName;
 		this.role = role;
 		this.studentsList = studentsList;
+	}
+	
+	public void addStudent(Student s)
+	{
+		studentsList.add(s);
 	}
 	
 	@Override

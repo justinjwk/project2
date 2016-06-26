@@ -3,6 +3,7 @@
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,6 +18,7 @@ public class project2
 	private final static boolean DEBUG = true;
 	private final static String STUDENT_FILE = "usernames1.txt";
 	private final static String STAFF_FILE = "staff1.txt";
+	private final static String OUTPUT_FILE_NAME = "result.txt";
 	private final static int MAX_STUDENTS_FOR_TA = 25;
 
 	// create a student list and staff list
@@ -38,7 +40,7 @@ public class project2
 		// this userInput for containing user's input
 		char userInput;
 
-		greeting();
+		//greeting();
 
 		assignStudents(allStudentList, staffList);
 
@@ -67,6 +69,7 @@ public class project2
 		finished();
 
 	}
+	
 
 	private static void assignStudents(ArrayList<Student> allStudentList, ArrayList<Staff> staffList)
 	{
@@ -88,6 +91,7 @@ public class project2
 
 		if(DEBUG)
 		{
+			System.out.println("---- Assigning students to staffs ----");
 			System.out.println("Students for TAs = " + totalStudentsForTAs);
 			System.out.println("Students for Graders = " + totalStudentsForGraders);
 			System.out.println("Students for Each Grader = " + studentsForEachGrader);
@@ -98,18 +102,59 @@ public class project2
 			}
 		}
 
-
-
 		Iterator<Student> iStudent = allStudentList.iterator();
 		Iterator<Staff> iStaff = staffList.iterator();
-
-		int counterForTA = 0;
-
-		while(iStudent.hasNext())
+		
+		int indexOfStaff = 0;
+		int graderCounter = 0;
+		
+		while(iStaff.hasNext())
 		{
-
+			Staff s = iStaff.next();
+			if(s.getRole().equals("TA"))
+			{
+				for(int i = 0; i < MAX_STUDENTS_FOR_TA; i++)
+				{
+					Student student = iStudent.next();
+					staffList.get(indexOfStaff).getStudentsList().add(student);
+				}
+			}
+			else
+			{
+				for(int i = 0; i < numStudentsForGraders[graderCounter]; i++)
+				{
+					Student student = iStudent.next();
+					staffList.get(indexOfStaff).getStudentsList().add(student);
+				}
+				graderCounter++;
+			}
+			indexOfStaff++;
 		}
-
+		
+		if(DEBUG)
+		{
+			System.out.println("----- Staff List after assigning students ----");
+			System.out.println(staffList);
+		}
+		
+		writeFile(OUTPUT_FILE_NAME);
+		
+	}
+	
+	private static void writeFile(String fileName) 
+	{
+		PrintWriter outfile = null;
+		try
+		{
+			outfile = new PrintWriter(fileName);
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("File writing is failed");
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
 	}
 
 	private static int countTA(ArrayList<Staff> staffList)
@@ -124,6 +169,7 @@ public class project2
 
 		if(DEBUG)
 		{
+			System.out.println("---- Number of TAs ----");
 			System.out.println("Num of TAs = " + count);
 		}
 
@@ -142,6 +188,7 @@ public class project2
 
 		if(DEBUG)
 		{
+			System.out.println("---- Number of Graders ----");
 			System.out.println("Num of Graders = " + count);
 		}
 
@@ -175,6 +222,17 @@ public class project2
 		}
 		return allStudentList.size();
 	}
+	
+	private static int getNumOfStaffs(ArrayList<Staff> staffList)
+	{
+		if(DEBUG)
+		{
+			System.out.println("---- Num of staffs ----");
+			System.out.println(staffList.size());
+		}
+
+		return staffList.size();
+	}
 
 	private static ArrayList<Staff> generateStaffList(String filePath)
 	{
@@ -189,17 +247,6 @@ public class project2
 		}
 
 		return staffList;
-	}
-
-	private static int getNumOfStaffs(ArrayList<Staff> staffList)
-	{
-		if(DEBUG)
-		{
-			System.out.println("---- Num of staffs ----");
-			System.out.println(staffList.size());
-		}
-
-		return staffList.size();
 	}
 
 	public static ArrayList<Student>readStudentData(String filePath)
