@@ -20,8 +20,10 @@ public class Student implements Comparable<Object>
 		return this.id.compareTo(s.getId());
 	}
 
-	@Override
-	public String toString() { return "Student [id=" + id + "]"; }
+	public String toString() 
+	{ 
+		return "Student [id=" + id + "]\n"; 
+	}
 
 	@Override
 	public boolean equals(Object obj)

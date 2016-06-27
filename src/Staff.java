@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Staff implements Comparable<Object>
 {
@@ -64,9 +65,16 @@ public class Staff implements Comparable<Object>
 
 	public void setStudentsList(ArrayList<Student> studentsList) { this.studentsList = studentsList; }
 
-	@Override
+
 	public String toString() {
-		return "Name= " + fName + " " + lName + ", role= " + role + ", studentsList= " + studentsList + "\n";
+		String slist = "";
+		Iterator<Student> istudent = studentsList.iterator();
+		while(istudent.hasNext())
+		{
+			Student s = istudent.next();
+			slist += s.getId() + "\n";
+		}
+		return fName + " " + lName + " - " + role + "\n----------------\n" + slist + "\n";
 	}
 
 	@Override

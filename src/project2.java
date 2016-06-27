@@ -52,6 +52,27 @@ public class project2
 			// call askUserInput() method and assign it to userInput value
 			userInput = askUserInput();
 
+			// If user inputs choice of "D"
+			if(userInput == 'D')
+			{
+				Iterator<Staff> iStaff = staffList.iterator();
+				// loop through staff list
+				for (int i = 0; i < numStaffs; i++)
+				{
+					Staff s = iStaff.next();
+					System.out.println("\n" + s.getfName() + " " + s.getlName() + " - " + s.getRole());
+					System.out.println("-------------");
+					System.out.println(s.getStudentsList().toString());
+					
+					// ask user input unless it prints the last staff
+					if(i < numStaffs - 1)
+					{
+						askUserInput();
+					}
+				}
+
+			}
+			
 			// if user inputs 'c' or 'C' then display the number of students
 			if(userInput == 'C')
 			{
@@ -67,10 +88,11 @@ public class project2
 
 		// call finsihed() method to display a game over message
 		finished();
-
 	}
-	
-
+	private static void displayAssignedStudentList(Staff s)
+	{
+		
+	}
 	private static void assignStudents(ArrayList<Student> allStudentList, ArrayList<Staff> staffList)
 	{
 
@@ -137,11 +159,11 @@ public class project2
 			System.out.println(staffList);
 		}
 		
-		writeFile(OUTPUT_FILE_NAME);
+		//writeFile(OUTPUT_FILE_NAME);
 		
 	}
 	
-	private static void writeFile(String fileName) 
+	/*private static void writeFile(String fileName) 
 	{
 		PrintWriter outfile = null;
 		try
@@ -155,7 +177,30 @@ public class project2
 			System.exit(0);
 		}
 		
-	}
+		Iterator<Staff> iStaff = staffList.iterator();
+		
+		while(iStaff.hasNext())
+		{
+			Staff s = iStaff.next();
+			System.out.println(s.getfName() + " " + s.getlName() + " - " + s.getRole());
+			System.out.println("-------------------------------");
+//			outfile.println(s.getfName() + " " + s.getlName() + " - " + s.getRole());
+//			outfile.println("-------------------------------");
+			
+			Iterator iStudent = s.getStudentsList().iterator();
+			int counter = 0;
+			while(iStudent.hasNext())
+			{
+				outfile.println(s.getStudentsList().get(counter).getId());
+				System.out.println(s.getStudentsList().get(counter).getId());
+				counter++;
+			}
+			
+		}
+		
+		outfile.close();
+		
+	}*/
 
 	private static int countTA(ArrayList<Staff> staffList)
 	{
@@ -326,7 +371,7 @@ public class project2
 		System.out.println("*   D - Display single Staff member and students assigned     *");
 		System.out.println("*   C - Display the number of students                        *");
 		System.out.println("*   S - Display all staff members                             *");
-		System.out.println("*   Q - Quite the program                                     *");
+		System.out.println("*   Q - Quit the program                                      *");
 		System.out.println("***************************************************************");
 	}
 
