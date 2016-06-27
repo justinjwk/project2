@@ -1,12 +1,24 @@
+// Author: Justin Kim
+// Source file:  Student.java
+// This Student class contains student's id
 
 public class Student implements Comparable<Object>
 {
 	String id;
 
+	/*
+	 * Default constructor
+	 */
 	public Student() { this.id = ""; }
 	
+	/*
+	 * Constructor with id
+	 */
 	public Student(String id) { this.id = id; }
 	
+	/*
+	 * Constructor with Student object
+	 */
 	public Student(Student s) { this.id = s.getId(); }
 	
 	protected String getId() { return id; }
@@ -23,24 +35,5 @@ public class Student implements Comparable<Object>
 	public String toString() 
 	{ 
 		return "Student [id=" + id + "]\n"; 
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Student other = (Student) obj;
-		if (id == null)
-		{
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
 	}
 }

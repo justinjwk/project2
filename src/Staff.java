@@ -1,3 +1,9 @@
+// Author: Justin Kim
+// Source file:  Staff.java
+// This Staff class contains staff's information 
+// includes their name, role, and student list
+
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -6,6 +12,9 @@ public class Staff implements Comparable<Object>
 	String fName, lName, role;
 	ArrayList<Student> studentsList;
 	
+	/*
+	 * Default Constructor
+	 */
 	public Staff()
 	{
 		this.fName = "";
@@ -14,6 +23,9 @@ public class Staff implements Comparable<Object>
 		this.studentsList = new ArrayList<Student>();
 	}
 	
+	/*
+	 * Constructor with staff's name and role
+	 */
 	public Staff(String fName, String lName, String role) 
 	{
 		this.fName = fName;
@@ -22,6 +34,9 @@ public class Staff implements Comparable<Object>
 		this.studentsList = new ArrayList<Student>();
 	}
 	
+	/*
+	 * Constructor with staff's name, role, and student list
+	 */
 	public Staff(String fName, String lName, String role, ArrayList<Student> studentsList) 
 	{
 		this.fName = fName;
@@ -30,9 +45,20 @@ public class Staff implements Comparable<Object>
 		this.studentsList = studentsList;
 	}
 	
+	/*
+	 * This method add a student to student list
+	 */
 	public void addStudent(Student s)
 	{
 		studentsList.add(s);
+	}
+
+	/*
+	 * This method returns staff's information
+	 */
+	public String getStaffInfo() 
+	{ 
+		return this.getfName() + " " + this.getlName() + " - " + this.getRole(); 
 	}
 	
 	@Override
@@ -54,7 +80,7 @@ public class Staff implements Comparable<Object>
 	public String getlName() { return lName; }
 
 	public String getRole() { return role; }
-
+	
 	public ArrayList<Student> getStudentsList() { return studentsList; }
 
 	public void setfName(String fName) { this.fName = fName; }
@@ -64,7 +90,6 @@ public class Staff implements Comparable<Object>
 	public void setRole(String role) { this.role = role; }
 
 	public void setStudentsList(ArrayList<Student> studentsList) { this.studentsList = studentsList; }
-
 
 	public String toString() {
 		String slist = "";
@@ -76,41 +101,4 @@ public class Staff implements Comparable<Object>
 		}
 		return fName + " " + lName + " - " + role + "\n----------------\n" + slist + "\n";
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Staff other = (Staff) obj;
-		if (fName == null) {
-			if (other.fName != null)
-				return false;
-		} else if (!fName.equals(other.fName))
-			return false;
-		if (lName == null) {
-			if (other.lName != null)
-				return false;
-		} else if (!lName.equals(other.lName))
-			return false;
-		if (role == null) {
-			if (other.role != null)
-				return false;
-		} else if (!role.equals(other.role))
-			return false;
-		if (studentsList == null) {
-			if (other.studentsList != null)
-				return false;
-		} else if (!studentsList.equals(other.studentsList))
-			return false;
-		return true;
-	}
-	
-	
-	
-	
-	
 }
